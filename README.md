@@ -68,7 +68,8 @@ for i in clean_prices['price']:
     else:
         affordability.append('NA')
 ```
-- The conditions were selected based off the 
+- The conditions were selected based off the numbers given to me by my manager (I made them up)
+
 
 
 
