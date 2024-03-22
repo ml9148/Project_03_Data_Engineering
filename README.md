@@ -122,3 +122,10 @@ To create the Hosts table, we want to use host_id as the primary key. We confirm
 Using .value_counts(), we created a dictionary of each host_id and the corresponding number of properties contained in the sample and mapped this to create a new column. This will allow the analyst to view both the total number of properties a host has list on the AirBnb website and the total number of properties a host has in our sample. 
 
 Lastly, we sorted the DataFrame by host_id and exported it as a csv file to be imported into our database.
+
+
+### Other Info
+
+
+### Retrieving the Data from the Database
+Finally, in the read_database.ipynb file, we used SQLAlchemy to retrieve the data from the database using an engine and connecting to the database to read each table into individual dataframes, stored for future use.
