@@ -1,0 +1,5 @@
+affordability,avg_review_per_price_mean,total_reviews_per_affordability
+Cheap $0-49,9.260476250974703,19591
+affordable $51-200,9.506454224808946,166320
+expensive $200-500,9.457092426891068,19648
+very expensive $500+,9.537335471545997,2426
