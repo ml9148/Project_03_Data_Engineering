@@ -1,5 +1,3 @@
--- Creating new tables and setting PRIMARY KEYs:
-
 CREATE TABLE housing_details (
     id INT NOT NULL PRIMARY KEY,
     host_id INT,
@@ -14,7 +12,26 @@ CREATE TABLE housing_details (
     amenities TEXT
 );
 
+SELECT property_type, COUNT(*) AS frequency
+FROM housing_details
+GROUP BY property_type
+ORDER BY property_type ASC;
+
+SELECT bed_type, COUNT(*) AS frequency
+FROM housing_details
+GROUP BY bed_type
+ORDER BY bed_type ASC;
+
+SELECT 
+    property_type,
+    COUNT(*) AS frequency,
+    FLOOR(AVG(accommodates)) AS avg_accommodates
+FROM 
+    housing_details
+GROUP BY 
+    property_type
+ORDER BY 
+    property_type ASC;
+
 SELECT * FROM housing_details
 
-SELECT COUNT (room_type) FROM housing_details
--- WHERE room_type = 'Entire home/apt';
