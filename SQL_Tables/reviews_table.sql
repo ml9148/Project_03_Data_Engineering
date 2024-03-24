@@ -1,18 +1,19 @@
--- DROP TABLE reviews;
-
-CREATE TABLE reviews (
-	host_id INT PRIMARY KEY NOT NULL,
-	number_of_reviews INT, 
-	first_review DATE,
-	last_review DATE,
-	review_scores_rating INT,
-	review_scores_accuracy INT,
-	review_scores_cleanliness INT,
-	review_scores_checkin INT,
-	review_scores_communication INT,
-	review_scores_location INT,
-	review_scores_value INT,
-	reviews_per_month VARCHAR(10)
+CREATE TABLE reviews
+(
+    id integer NOT NULL,
+    number_of_reviews integer NOT NULL,
+    first_review date,
+    last_review date,
+    review_scores_rating integer,
+    review_scores_accuracy integer,
+    review_scores_cleanliness integer,
+    review_scores_checkin integer,
+    review_scores_communication integer,
+    review_scores_location integer,
+    review_scores_value integer,
+    reviews_per_month character varying(10),
+    CONSTRAINT reviews_pkey PRIMARY KEY (id)
 );
 
-SELECT*FROM reviews;
+SELECT * FROM reviews;
+
