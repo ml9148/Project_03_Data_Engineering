@@ -11,7 +11,7 @@
 We utilized ETL workflows to create an analysis-ready database of Los Angeles AirBnb listings from [data webscraped](https://www.kaggle.com/datasets/oindrilasen/la-airbnb-listings) in March 2017.  
 
 ## Tools
-- Python: Pandas, locale, SQLAlchemy
+- Python: Pandas, locale, SQLAlchemy, numpy, 
 - SQL: PgAdmin
 - QuickDBD
 - Microsoft PowerPoint
@@ -23,8 +23,8 @@ We utilized ETL workflows to create an analysis-ready database of Los Angeles Ai
 - listing_location_details.ipynb: Summarizes the location details for every listing in the sample and exports csv to the data folder.
 - prices_VS_reviews.ipynb: Simplifies the pricing table and exports csv to the data folder.
 - hosts.ipynb: Creates a table with all the host-related information for each host id and exports to csv in the data folder.
-- .ipynb:
-- .ipyynb:
+- reviews.ipynb:
+- sentiment.ipyynb:
 - .ipynb:
 - read_database.ipynb: Uses SQLAlchemy to read the data from our database and store it for future use as Pandas DataFrames.
 - config.py: Stores username and password information to access the database from PgAdmin using the read_database.ipynb file.
