@@ -63,6 +63,17 @@ CREATE TABLE "final_listing_cleaned" (
      )
 );
 
+DROP TABLE IF EXISTS sentiment;
+
+CREATE TABLE "sentiment" (
+	"Summary" varchar,
+	"Host ID" integer NOT NULL,
+    "Polarity Score" varchar,
+    "Polarity Sentiment" varchar,
+    "Subjectivity Score" varchar,
+    "Subjectivity Sentiment" varchar
+);
+
 DROP TABLE IF EXISTS listing_location_details;
 
 CREATE TABLE "listing_location_details" (
@@ -107,6 +118,9 @@ REFERENCES "host" ("host_id");
 
 ALTER TABLE "final_listing_cleaned" ADD CONSTRAINT "fk_final_listing_cleaned_price_affordability" FOREIGN KEY("price", "affordability")
 REFERENCES "pricing_vs_reviews" ("price", "affordability");
+
+ALTER TABLE "sentiment" ADD CONSTRAINT "fk_sentiment_Host ID" FOREIGN KEY("Host ID")
+REFERENCES "host" ("host_id");
 
 ALTER TABLE "listing_location_details" ADD CONSTRAINT "fk_listing_location_details_listing_id" FOREIGN KEY("listing_id")
 REFERENCES "final_listing_cleaned" ("id");
