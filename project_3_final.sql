@@ -1,7 +1,7 @@
 -- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
-DROP TABLE IF EXISTS host;
+-- DROP TABLE IF EXISTS host;
 
 CREATE TABLE "host" (
     "host_id" int,
@@ -22,7 +22,7 @@ CREATE TABLE "host" (
      )
 );
 
-DROP TABLE IF EXISTS pricing_vs_reviews;
+-- DROP TABLE IF EXISTS pricing_vs_reviews;
 
 CREATE TABLE "pricing_vs_reviews" (
     "price" varchar,
@@ -34,24 +34,26 @@ CREATE TABLE "pricing_vs_reviews" (
      )
 );
 
-DROP TABLE IF EXISTS Reviews;
+-- DROP TABLE IF EXISTS comprehensive_reviews;
 
-CREATE TABLE "Reviews" (
-    "host_id" int,
-    "number_of_reviews" int,
-    "first_review" varchar,
-    "last_review" varchar,
-    "review_scores_rating" float,
-    "review_scores_accuracy" float,
-    "review_scores_cleanliness" float,
-    "review_scores_checkin" float,
-    "review_scores_communication" float,
-    "review_scores_location" float,
-    "review_scores_value" float,
-    "reviews_per_month" float
+CREATE TABLE "comprehensive_reviews" (
+    "Host ID" integer NOT NULL,
+    "Number of Reviews" integer NOT NULL,
+    "First Review" date,
+    "Last Review" date,
+    "Overall Rating" integer,
+	"Review Score" varchar,
+    "Accuracy" integer,
+    "Cleanliness" integer,
+    "Check-In" integer,
+    "Communication" integer,
+    "Location" integer,
+    "Value" integer,
+    "Reviews per Month" varchar,
+	"Category Average" varchar
 );
 
-DROP TABLE IF EXISTS final_listing_cleaned;
+-- DROP TABLE IF EXISTS final_listing_cleaned;
 
 CREATE TABLE "final_listing_cleaned" (
     "id" int,
@@ -63,7 +65,7 @@ CREATE TABLE "final_listing_cleaned" (
      )
 );
 
-DROP TABLE IF EXISTS sentiment;
+-- DROP TABLE IF EXISTS sentiment;
 
 CREATE TABLE "sentiment" (
 	"Summary" varchar,
@@ -74,7 +76,7 @@ CREATE TABLE "sentiment" (
     "Subjectivity Sentiment" varchar
 );
 
-DROP TABLE IF EXISTS listing_location_details;
+-- DROP TABLE IF EXISTS listing_location_details;
 
 CREATE TABLE "listing_location_details" (
     "listing_id" int,
@@ -94,7 +96,7 @@ CREATE TABLE "listing_location_details" (
     "host_id" int
 );
 
-DROP TABLE IF EXISTS housing_details_data_cleaned;
+-- DROP TABLE IF EXISTS housing_details_data_cleaned;
 
 CREATE TABLE "housing_details_data_cleaned" (
     "id" int,
@@ -110,7 +112,7 @@ CREATE TABLE "housing_details_data_cleaned" (
     "amenities" varchar
 );
 
-ALTER TABLE "Reviews" ADD CONSTRAINT "fk_Reviews_host_id" FOREIGN KEY("host_id")
+ALTER TABLE "comprehensive_reviews" ADD CONSTRAINT "fk_comprehensive_reviews_host_id" FOREIGN KEY("Host ID")
 REFERENCES "host" ("host_id");
 
 ALTER TABLE "final_listing_cleaned" ADD CONSTRAINT "fk_final_listing_cleaned_host_id" FOREIGN KEY("host_id")
