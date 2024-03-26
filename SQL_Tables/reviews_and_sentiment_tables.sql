@@ -8,15 +8,15 @@ CREATE TABLE comprehensive_reviews
     "First Review" date,
     "Last Review" date,
     "Overall Rating" integer,
-	"Review Score" varchar,
+	"Review Score" varchar(10),
     "Accuracy" integer,
     "Cleanliness" integer,
     "Check-In" integer,
     "Communication" integer,
     "Location" integer,
     "Value" integer,
-	"Category Average" varchar,
-    "Reviews per Month" varchar,
+	"Category Average" varchar(15),
+    "Reviews per Month" varchar(10),
     CONSTRAINT comprehensive_reviews_pkey PRIMARY KEY ("Host ID")
 );
 
