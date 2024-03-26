@@ -356,6 +356,8 @@ df_clean.to_csv("Data/summary.csv", index=False)
 
 ### Retrieving the Data from the Database
 Finally, in the read_database.ipynb file, we used SQLAlchemy to retrieve the data from the database using an engine and connecting to the database to read each table into individual dataframes, stored for future use. We referenced a [tutorial](https://www.tutorialspoint.com/connecting-postgresql-with-sqlalchemy-in-python) to confirm proper syntax for connecting to creating the connection.
+- psycopg2 module is required for file to run without error
+`$ pip install psycopg2`
 
 ### Ethical Considerations
 
