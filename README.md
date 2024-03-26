@@ -123,12 +123,15 @@ Using .value_counts(), we created a dictionary of each host_id and the correspon
 
 Lastly, we sorted the DataFrame by host_id and exported it as a csv file to be imported into our database.
 
+<<<<<<< HEAD
 ### Housing_Details Table
 For the housing details obtained in (https://www.kaggle.com/datasets/oindrilasen/la-airbnb-listings), a dataframe Housing_Details.ipynb was created dropping non-related columns and specific columns related to housing details were maintained: host_id, neighbourhood_cleansed, property_type, room_type, accommodates, bathrooms, bedrooms, beds, bed_type and amenities; these columns are available for further analisys specific to the housing details topic.
 
 For Housing_Details.ipynb the "id" or listing ID was used as it contains unique values that helped understand how many types of housing units in the LA's airbnb listings area are available (Apartment, Cabin, House, Loft, etc.), with the available sample we can pull and analyze from different angles what types of beds are listed and how many people they accommodate.
 
 The data scraped is exported as a csv file and can be linked to the other datasets for different purposes.
+=======
+>>>>>>> 76fd1cadab2e0f47baa6001b2c2ff7d1912d01f9
 
 ### Other Info
 
