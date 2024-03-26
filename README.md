@@ -44,6 +44,18 @@ First, we chose the columns that would be appropriate for our database. We then 
 
 **Need to discuss our ethical considerations and anything else designated in the rubric.
 
+
+### Hosts_Info Table
+In the hosts.ipynb file, we first read in the sample csv file and create a dataframe of the host-related columns: host_id, host_name, host_since, host_location, host_response_time, host_response_rate, host_is_superhost, host_neighbourhood, host_total_listings_count, host_listings_in_sample, host_verifications, host_has_profile_pic, host_identity_verified.
+
+Next, we explore the datatypes and convert them as needed. We removed the percent symbol from the host response rate so that it could be used in analysis. We also mapped the columns containing "t" and "f" to "True" and "False" so that they could be analyzed as boolean columns. 
+
+To create the Hosts table, we want to use host_id as the primary key. We confirmed that since some hosts have multiple listings, and all host-related information is identical for each host's listing, we would drop the duplicate host_ids. However, we needed to take more steps in transforming the Hosts table before doing so.
+
+Using .value_counts(), we created a dictionary of each host_id and the corresponding number of properties contained in the sample and mapped this to create a new column. This will allow the analyst to view both the total number of properties a host has list on the AirBnb website and the total number of properties a host has in our sample. 
+
+Lastly, we sorted the DataFrame by host_id and exported it as a csv file to be imported into our database.
+
 ### Pricing vs Total Review Score
 
 My goal for this extract was to simplify the pricing of the table by grouping the price column and aggregating the respective reviews. 
@@ -112,17 +124,6 @@ for i in clean_prices['price']:
 - The conditions were selected based off the numbers given to me by my manager (I made them up)
 
 
-### Hosts_Info Table
-In the hosts.ipynb file, we first read in the sample csv file and create a dataframe of the host-related columns: host_id, host_name, host_since, host_location, host_response_time, host_response_rate, host_is_superhost, host_neighbourhood, host_total_listings_count, host_listings_in_sample, host_verifications, host_has_profile_pic, host_identity_verified.
-
-Next, we explore the datatypes and convert them as needed. We removed the percent symbol from the host response rate so that it could be used in analysis. We also mapped the columns containing "t" and "f" to "True" and "False" so that they could be analyzed as boolean columns. 
-
-To create the Hosts table, we want to use host_id as the primary key. We confirmed that since some hosts have multiple listings, and all host-related information is identical for each host's listing, we would drop the duplicate host_ids. However, we needed to take more steps in transforming the Hosts table before doing so.
-
-Using .value_counts(), we created a dictionary of each host_id and the corresponding number of properties contained in the sample and mapped this to create a new column. This will allow the analyst to view both the total number of properties a host has list on the AirBnb website and the total number of properties a host has in our sample. 
-
-Lastly, we sorted the DataFrame by host_id and exported it as a csv file to be imported into our database.
-
 ### listing_location_details Table
 The listing_location_deatils.ipynb file contains all relevant columns to each Aibnb Listing. This began with loading the listings_cleaned_sample.csv file which the group had previously worked on and converting it to a Pandas dataframe. Utiltizing an Entity Relationship Diagram, I then proceeded to drop the following columns as I felt that they were not relevant to listing_location_details: 'transit','access','interaction','review_scores_communication','review_scores_location','review_scores_value','instant_bookable','cancellation_policy','require_guest_profile_picture', 'require_guest_phone_verification','calculated_host_listings_count','reviews_per_month','extra_people','minimum_nights','maximum_nights','number_of_reviews', 'first_review','last_review','review_scores_rating','review_scores_accuracy','review_scores_cleanliness','review_scores_checkin','price','weekly_price','monthly_price','security_deposit', 'cleaning_fee','guests_included','beds','bed_type','amenities','square_feet', 'Unnamed: 0', 'host_name', 'space', 'description', 'notes', 'host_about', 'host_response_time', 'host_since', 'host_is_superhost', 'host_response_rate', 'host_location', 'host_listings_count', 'host_total_listings_count', 'host_verifications', 'host_neighbourhood', 'host_has_profile_pic', 'host_identity_verified', 'neighbourhood', 'accommodates', 'bathrooms', 'bedrooms', 'street', 'smart_location', 'house_rules'.
 
@@ -144,4 +145,4 @@ The data scraped is exported as a csv file and can be linked to the other datase
 
 
 ### Retrieving the Data from the Database
-Finally, in the read_database.ipynb file, we used SQLAlchemy to retrieve the data from the database using an engine and connecting to the database to read each table into individual dataframes, stored for future use.
+Finally, in the read_database.ipynb file, we used SQLAlchemy to retrieve the data from the database using an engine and connecting to the database to read each table into individual dataframes, stored for future use. We referenced a [tutorial](https://www.tutorialspoint.com/connecting-postgresql-with-sqlalchemy-in-python) to confirm proper syntax for connecting to creating the connection.
