@@ -145,7 +145,7 @@ The purpose of the comprehensive reviews dataframe and table are to provide a wa
 ---
 
 1. To begin we read the csv file into a pandas dataframe, reduced the columns to only the host_id primary key and those that were related to reviews, and updated the column names
-
+```
 # import libraries
 import pandas as pd
 
@@ -157,11 +157,12 @@ df_clean=df.drop(columns=[''])
 
 # clean up column header names
 df_clean = df_clean.rename(columns={'original_name': 'New Name'})
+```
 
 ---
 
 2. We cleaned the remaing data by dropping any elements with no reviews and duplicate hosts, and updated data types to be easy to use for the rest of the transformation and table creation in PostgreSQL
-
+```
 # drop any items with 0 reviews
 df_clean.drop(df_clean.loc[df_clean['Number of Reviews']==0].index, inplace=True)
 
@@ -179,11 +180,12 @@ df_clean['Communication'] = df_clean['Communication'].astype('Int64')
 df_clean['Location'] = df_clean['Location'].astype('Int64')
 df_clean['Value'] = df_clean['Value'].astype('Int64')
 df_clean['Reviews per Month'] = df_clean['Reviews per Month'].astype('string')
+```
 
 ---
 
 3. We bucketed the overall ratings scores and calculated the mean across categorical ratings.  We created 2 new columns in the dataframe to display.
-
+```
 # bucket the overall ratings 
 df_clean['Review Score']=pd.cut(df_clean['Overall Rating'],5,labels=['Very Low','Low','Moderate','High','Very High'])
 
@@ -193,14 +195,14 @@ average = df_clean[['Accuracy','Cleanliness','Check-In','Communication','Locatio
 #insert data into new column
 desired_index = 12
 df_clean.insert(desired_index, 'Category Average', average)
-
+```
 ---
 
 4. Sent the transformed data to csv
-
+```
 # send cleaned data to csv
 df_clean.to_csv("Data/reviews.csv", index=False)
-
+```
 
 ### Sentiment Analysis
 
@@ -209,7 +211,7 @@ Our goal for this section was to recode open-end summary reviews of Airbnb's as 
 ---
 
 1. We imported the necessary libraries, read our data into a dataframe, and reduced data to summaries and host_id as the primary key
-
+```
 # import libraries
 import pandas as pd
 import numpy as np
@@ -227,11 +229,11 @@ df=pd.read_csv(Resources/Data_Cleaning/Listings_Cleaned_Sample.csv")
 
 # drop unnecessary columns
 df_clean=df.drop(columns=[''])
-
+```
 ---
 
 2. We dropped null values and duplicate host_id elements
-
+```
 # identify null values in summary
 df_clean['summary'] = df_clean['summary'].replace('', np.nan)
 
@@ -240,11 +242,11 @@ df_clean.dropna(subset=['summary'], inplace=True)
 
 # drop duplicates in host id
 df_clean.drop_duplicates(subset=['host_id'], inplace=True)
-
+```
 ---
 
 3. We processed the text to prepare it for analysis by converting text to tokens, filtering the tokens, lemmatizing the tokens, then applying the changes to the text
-
+```
 # pre-process summary text for manipulation
 def preprocess_text(text):
     if pd.isnull(text):
@@ -265,11 +267,11 @@ def preprocess_text(text):
 
 # apply changes to summary text
 df_clean['summary'] = df_clean['summary'].apply(preprocess_text)
-
+```
 ---
 
 4. We calculated polarity and sentiment scores and used if/elseig statements to recode the scores, then displayed the scores and sentiments in new corresponding columns
-
+```
 # create column for sentiment polarity scores
 df_clean['polarity_score'] = ""
 
@@ -333,11 +335,11 @@ def defined_sentiment(review):
 
 # add subjectivity sentiment to the new column    
 df_clean['subjectivity_sentiment'] = df_clean['summary'].apply(defined_sentiment)
-
+```
 ---
 
 5. We updated column names and data types for easy table creation in PostgreSQL, then pushed the transformed data to csv
-
+```
 # Update column header names
 df_clean = df_clean.rename(columns={'old_name': 'New Name'})
 
@@ -350,8 +352,7 @@ df_clean['Subjectivity Sentiment'] = df_clean['Subjectivity Sentiment'].astype('
 
 # save final data to csv
 df_clean.to_csv("Data/summary.csv", index=False)
-
-### Other Info
+```
 
 
 ### Retrieving the Data from the Database
