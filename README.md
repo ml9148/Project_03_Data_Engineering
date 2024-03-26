@@ -118,7 +118,9 @@ for i in clean_prices['price']:
     else:
         affordability.append('NA')
 ```
-- The conditions were selected based off the numbers given to me by my manager (I made them up)
+- The conditions were selected based off the numbers given to me by my manager
+
+- There is another whole table that I created in this notebook based that grouped affordabilty and aggregated all of the averages and sums of each price bracket. I cut that from the database because taking an average of an average yielded confusing and undesirable results that I couldn't justify keeping.
 
 
 ### listing_location_details Table
