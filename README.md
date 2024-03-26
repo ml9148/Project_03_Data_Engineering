@@ -11,7 +11,7 @@
 We utilized ETL workflows to create an analysis-ready database of Los Angeles AirBnb listings from [data webscraped](https://www.kaggle.com/datasets/oindrilasen/la-airbnb-listings) in March 2017.  
 
 ## Tools
-- Python: Pandas, locale, SQLAlchemy
+- Python: Pandas, locale, NLTK, TextBlob, SQLAlchemy
 - SQL: PgAdmin
 - QuickDBD
 - Microsoft PowerPoint
@@ -23,8 +23,8 @@ We utilized ETL workflows to create an analysis-ready database of Los Angeles Ai
 - listing_location_details.ipynb: Summarizes the location details for every listing in the sample and exports csv to the data folder.
 - prices_VS_reviews.ipynb: Simplifies the pricing table and exports csv to the data folder.
 - hosts.ipynb: Creates a table with all the host-related information for each host id and exports to csv in the data folder.
-- .ipynb:
-- .ipyynb:
+- Housing_details.ipynb: Transforms the sample into the Housing DataFrame and exports as csv.
+- sentiment.ipynb: Creates a sentiment analysis on relevant columns and exports as csv.
 - project_3_final.sql: Creates our database and tables in SQL from the .csv files we created in each notebook.
 - read_database.ipynb: Uses SQLAlchemy to read the data from our database and store it for future use as Pandas DataFrames.
 - config.py: Stores username and password information to access the database from PgAdmin using the read_database.ipynb file.
@@ -134,8 +134,7 @@ For the housing details obtained in (https://www.kaggle.com/datasets/oindrilasen
 
 For Housing_Details.ipynb the "id" or listing ID was used as it contains unique values that helped understand how many types of housing units in the LA's airbnb listings area are available (Apartment, Cabin, House, Loft, etc.), with the available sample we can pull and analyze from different angles what types of beds are listed and how many people they accommodate.
 
-The data scraped is exported as a csv file and can be linked to the other datasets for different purposes.
-=======
+The data scraped is exported as a csv file and can be linked to other datasets for different purposes.
 
 
 ### Comprehensive Reviews
