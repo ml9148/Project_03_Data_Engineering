@@ -11,7 +11,7 @@
 We utilized ETL workflows to create an analysis-ready database of Los Angeles AirBnb listings from [data webscraped](https://www.kaggle.com/datasets/oindrilasen/la-airbnb-listings) in March 2017.  
 
 ## Tools
-- Python: Pandas, locale, SQLAlchemy, numpy, 
+- Python: Pandas, locale, SQLAlchemy, Numpy, NLTK, TextBlob
 - SQL: PgAdmin
 - QuickDBD
 - Microsoft PowerPoint
@@ -43,6 +43,219 @@ We utilized ETL workflows to create an analysis-ready database of Los Angeles Ai
 First, we chose the columns that would be appropriate for our database. We then drew a random sample of 10,000 observations (approximately 1/3 of the original dataset) to eliminate issues with large file sizes. Next, we prepared the file to be inserted into the database by checling for null values in columns we intended to be primary keys.  We then exported our dataframe to a .csv file (Listings_Cleaned_Sample.csv) to use in creating individual tables. 
 
 **Need to discuss our ethical considerations and anything else designated in the rubric.
+
+### Comprehensive Reviews
+
+The purpose of the comprehensive reviews dataframe and table are to provide a way for anyone viewing the data to be able to easily determiine what the different reviews of different hosts are, as well as sort the data as needed to find hosts with specific ratings, whether overall or by category.  
+
+---
+
+1. To begin we read the csv file into a pandas dataframe, reduced the columns to only the host_id primary key and those that were related to reviews, and updated the column names
+
+# import libraries
+import pandas as pd
+
+# read in data
+df=pd.read_csv("Resources/Data_Cleaning/Listings_Cleaned_Sample.csv")
+
+# drop unnecessary columns
+df_clean=df.drop(columns=[''])
+
+# clean up column header names
+df_clean = df_clean.rename(columns={'original_name': 'New Name'})
+
+---
+
+2. We cleaned the remaing data by dropping any elements with no reviews and duplicate hosts, and updated data types to be easy to use for the rest of the transformation and table creation in PostgreSQL
+
+# drop any items with 0 reviews
+df_clean.drop(df_clean.loc[df_clean['Number of Reviews']==0].index, inplace=True)
+
+# drop duplicate hosts
+df_clean.drop_duplicates(subset=['Host ID'], inplace=True)
+
+# update data types for postgresql import
+df_clean['First Review'] = pd.to_datetime(df_clean['First Review'])
+df_clean['Last Review'] = pd.to_datetime(df_clean['Last Review'])
+df_clean['Overall Rating'] = df_clean['Overall Rating'].astype('Int64')
+df_clean['Accuracy'] = df_clean['Accuracy'].astype('Int64')
+df_clean['Cleanliness'] = df_clean['Cleanliness'].astype('Int64')
+df_clean['Check-In'] = df_clean['Check-In'].astype('Int64')
+df_clean['Communication'] = df_clean['Communication'].astype('Int64')
+df_clean['Location'] = df_clean['Location'].astype('Int64')
+df_clean['Value'] = df_clean['Value'].astype('Int64')
+df_clean['Reviews per Month'] = df_clean['Reviews per Month'].astype('string')
+
+---
+
+3. We bucketed the overall ratings scores and calculated the mean across categorical ratings.  We created 2 new columns in the dataframe to display.
+
+# bucket the overall ratings 
+df_clean['Review Score']=pd.cut(df_clean['Overall Rating'],5,labels=['Very Low','Low','Moderate','High','Very High'])
+
+# find the average of each hosts subcategory ratings and round to 2 decimals
+average = df_clean[['Accuracy','Cleanliness','Check-In','Communication','Location','Value']].fillna(0).mean(axis=1).round(2)
+
+#insert data into new column
+desired_index = 12
+df_clean.insert(desired_index, 'Category Average', average)
+
+---
+
+4. Sent the transformed data to csv
+
+# send cleaned data to csv
+df_clean.to_csv("Data/reviews.csv", index=False)
+
+
+### Sentiment Analysis
+
+Our goal for this section was to recode open-end summary reviews of Airbnb's as either positive, negative, or neutral in terms of polarity and objective, subjective, or neutral in terms of subjectivity. We used Pandas, NLTK and TextBlob
+
+---
+
+1. We imported the necessary libraries, read our data into a dataframe, and reduced data to summaries and host_id as the primary key
+
+# import libraries
+import pandas as pd
+import numpy as np
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+import textblob
+from textblob import TextBlob
+
+# read data into dataframe
+df=pd.read_csv(Resources/Data_Cleaning/Listings_Cleaned_Sample.csv")
+
+# drop unnecessary columns
+df_clean=df.drop(columns=[''])
+
+---
+
+2. We dropped null values and duplicate host_id elements
+
+# identify null values in summary
+df_clean['summary'] = df_clean['summary'].replace('', np.nan)
+
+# drop null values in summary
+df_clean.dropna(subset=['summary'], inplace=True)
+
+# drop duplicates in host id
+df_clean.drop_duplicates(subset=['host_id'], inplace=True)
+
+---
+
+3. We processed the text to prepare it for analysis by converting text to tokens, filtering the tokens, lemmatizing the tokens, then applying the changes to the text
+
+# pre-process summary text for manipulation
+def preprocess_text(text):
+    if pd.isnull(text):
+        return ""
+
+# tokenize text    
+    tokens = word_tokenize(text.lower())
+
+ # filter out stopwords   
+    filtered_tokens = [token for token in tokens if token not in stopwords.words('english')]
+
+ # lemmatize the tokens   
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
+
+    processed_text = ' '.join(lemmatized_tokens)
+    return processed_text
+
+# apply changes to summary text
+df_clean['summary'] = df_clean['summary'].apply(preprocess_text)
+
+---
+
+4. We calculated polarity and sentiment scores and used if/elseig statements to recode the scores, then displayed the scores and sentiments in new corresponding columns
+
+# create column for sentiment polarity scores
+df_clean['polarity_score'] = ""
+
+# pull polarity sentiment scores
+def calculated_sentiment(text):
+    polarity_score = TextBlob(text)
+    try:
+        return polarity_score.sentiment.polarity
+    except:
+        return None
+
+# add summary polarity scores in corresponding column
+df_clean['polarity_score'] = df_clean['summary'].apply(calculated_sentiment)
+
+# create column for polarity sentiments determined by the polarity score
+df_clean['polarity_sentiment'] = ""
+
+# recode polarity scores as sentiment (positive, negative, neutral) 
+def defined_sentiment(review):
+    polarity_sentiment = TextBlob(review)
+
+    sentiment = polarity_sentiment.sentiment.polarity
+    if sentiment > 0:
+        return "positive"
+    elif sentiment < 0:
+        return "negative"
+    else:
+        return "neutral"
+
+# add polarity sentiments to corresponding column
+df_clean['polarity_sentiment'] = df_clean['summary'].apply(defined_sentiment)
+
+# create column for sentiment subjectivity scores
+df_clean['subjectivity_score'] = ""
+
+# calculate subjectivity scores
+def calculated_sentiment(text):
+    subjectivity_score = TextBlob(text)
+    try:
+        return subjectivity_score.sentiment.subjectivity
+    except:
+        return None
+
+# add scores to the corresponding column
+df_clean['subjectivity_score'] = df_clean['summary'].apply(calculated_sentiment)
+
+# create column for subjectivity sentiment
+df_clean['subjectivity_sentiment'] = ""
+
+# recode subjectivity scores as sentiment (positive, negative, neutral)
+def defined_sentiment(review):
+    subjectivity_sentiment = TextBlob(review)
+
+    sentiment = subjectivity_sentiment.sentiment.polarity
+    if sentiment > 0:
+        return "objective"
+    elif sentiment < 0:
+        return "subjective"
+    else:
+        return "neutral"
+
+# add subjectivity sentiment to the new column    
+df_clean['subjectivity_sentiment'] = df_clean['summary'].apply(defined_sentiment)
+
+---
+
+5. We updated column names and data types for easy table creation in PostgreSQL, then pushed the transformed data to csv
+
+# Update column header names
+df_clean = df_clean.rename(columns={'old_name': 'New Name'})
+
+# update data types for sql
+df_clean['Summary'] = df_clean['Summary'].astype('string')
+df_clean['Polarity Score'] = df_clean['Polarity Score'].astype('string')
+df_clean['Polarity Sentiment'] = df_clean['Polarity Sentiment'].astype('string')
+df_clean['Subjectivity Score'] = df_clean['Subjectivity Score'].astype('string')
+df_clean['Subjectivity Sentiment'] = df_clean['Subjectivity Sentiment'].astype('string')
+
+# save final data to csv
+df_clean.to_csv("Data/summary.csv", index=False)
 
 ### Pricing vs Total Review Score
 
