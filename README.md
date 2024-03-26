@@ -359,3 +359,7 @@ df_clean.to_csv("Data/summary.csv", index=False)
 
 ### Retrieving the Data from the Database
 Finally, in the read_database.ipynb file, we used SQLAlchemy to retrieve the data from the database using an engine and connecting to the database to read each table into individual dataframes, stored for future use. We referenced a [tutorial](https://www.tutorialspoint.com/connecting-postgresql-with-sqlalchemy-in-python) to confirm proper syntax for connecting to creating the connection.
+
+### Ethical Considerations
+
+The data we extracted was from a web scrape from publically available information from Air bnb in 2017. The dataset itself is considered a "fact" and not an original creation therefore it is protected from copywrite. The columns containing Personally Identifiable Information (PII) such as the pictures of the host and their property were removed prior to transforming the data. Each listings' pieces of PII were originally inputed by the person it is identifying. The location information and first names of the host were also uploaded with consideration that they would be available to the public in the first place.
