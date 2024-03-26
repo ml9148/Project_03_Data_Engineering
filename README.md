@@ -25,7 +25,7 @@ We utilized ETL workflows to create an analysis-ready database of Los Angeles Ai
 - hosts.ipynb: Creates a table with all the host-related information for each host id and exports to csv in the data folder.
 - .ipynb:
 - .ipyynb:
-- .ipynb:
+- project_3_final.sql: Creates our database and tables in SQL from the .csv files we created in each notebook.
 - read_database.ipynb: Uses SQLAlchemy to read the data from our database and store it for future use as Pandas DataFrames.
 - config.py: Stores username and password information to access the database from PgAdmin using the read_database.ipynb file.
 - .gitignore: Secures the config.py file.
@@ -41,9 +41,6 @@ We utilized ETL workflows to create an analysis-ready database of Los Angeles Ai
 
 ### Sample selection
 First, we chose the columns that would be appropriate for our database. We then drew a random sample of 10,000 observations (approximately 1/3 of the original dataset) to eliminate issues with large file sizes. Next, we prepared the file to be inserted into the database by checling for null values in columns we intended to be primary keys.  We then exported our dataframe to a .csv file (Listings_Cleaned_Sample.csv) to use in creating individual tables. 
-
-**Need to discuss our ethical considerations and anything else designated in the rubric.
-
 
 ### Hosts_Info Table
 In the hosts.ipynb file, we first read in the sample csv file and create a dataframe of the host-related columns: host_id, host_name, host_since, host_location, host_response_time, host_response_rate, host_is_superhost, host_neighbourhood, host_total_listings_count, host_listings_in_sample, host_verifications, host_has_profile_pic, host_identity_verified.
@@ -131,7 +128,7 @@ I made sure to keep the 'id' column (which I later rename 'listing_id' to keep b
 
 Next I did some simple data analysis in the form of value counts to quickly show how many different cities, neighborhoods, property_types, room_types, and hosts are contained in the final table. The last step was to export the final table I had created called listing_location_df_final to a csv file to that it could be utilized in our SQL code.
 
-<<<<<<< HEAD
+
 ### Housing_Details Table
 For the housing details obtained in (https://www.kaggle.com/datasets/oindrilasen/la-airbnb-listings), a dataframe Housing_Details.ipynb was created dropping non-related columns and specific columns related to housing details were maintained: host_id, neighbourhood_cleansed, property_type, room_type, accommodates, bathrooms, bedrooms, beds, bed_type and amenities; these columns are available for further analisys specific to the housing details topic.
 
@@ -139,7 +136,7 @@ For Housing_Details.ipynb the "id" or listing ID was used as it contains unique 
 
 The data scraped is exported as a csv file and can be linked to the other datasets for different purposes.
 =======
->>>>>>> 76fd1cadab2e0f47baa6001b2c2ff7d1912d01f9
+
 
 ### Comprehensive Reviews
 
